@@ -3,16 +3,14 @@
 <body>
 
 <div class="container">
-    <h1 class="pt-md-5 pb-md-5">Pokedex</h1>
-
+    <h1 class="pt-md-5 pb-md-5">{{trainer.trainer.name}}</h1>
     <div class="card-deck">
-        {{#pokemonTypes}}
+
+        {{#trainer.team}}
             {{> layout/pokemonDetail}}
-        {{/pokemonTypes}}
+        {{/trainer.team}}
     </div>
-
 </div>
-
 </body>
 
 {{> layout/footer}}

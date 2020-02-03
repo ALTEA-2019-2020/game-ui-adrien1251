@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +23,15 @@ public class PokemonTypeServiceImpl implements PokemonTypeService {
     public List<PokemonType> listPokemonsTypes() {
         PokemonType[] pokemonTypes = restTemplate.getForObject(pokemonServiceUrl + POKEMON_TYPE_PATH, PokemonType[].class);
         return Arrays.asList(pokemonTypes);
+    }
+
+    @Override
+    public List<PokemonType> listPokemonsTypes(List<Integer> ids) {
+        List<PokemonType> pokemonTypes = new ArrayList<>();
+        ids.stream().forEach(pokemonId ->
+                pokemonTypes.add(restTemplate.getForObject(pokemonServiceUrl + POKEMON_TYPE_PATH + pokemonId, PokemonType.class))
+        );
+        return pokemonTypes;
     }
 
     @Autowired
