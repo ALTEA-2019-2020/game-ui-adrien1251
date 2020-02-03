@@ -1,6 +1,5 @@
 package com.miage.altea.game_ui.bo;
 
-import com.miage.altea.game_ui.pokemonTypes.bo.PokemonType;
 import com.miage.altea.game_ui.trainer.bo.Trainer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrainerWithPokemons {
-    Trainer trainer;
+    private Trainer trainer;
 
-    List<PokemonType> team;
+    private List<PokemonWithLvl> team;
 }

@@ -1,5 +1,6 @@
 package com.miage.altea.game_ui.trainer.service;
 
+import com.miage.altea.game_ui.bo.PokemonWithLvl;
 import com.miage.altea.game_ui.bo.TrainerWithPokemons;
 import com.miage.altea.game_ui.pokemonTypes.bo.PokemonType;
 import com.miage.altea.game_ui.pokemonTypes.service.PokemonTypeService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,9 +53,24 @@ public class TrainerServiceImpl implements TrainerService {
 
         List<Integer> ids = trainer.getTeam().stream().map(Pokemon::getPokemonTypeId).collect(Collectors.toList());
 
+        List<PokemonType> pokemonTypes = pokemonTypeService.listPokemonsTypes(ids);
+
+        List<PokemonWithLvl> pokemonWithLvls = new ArrayList<>();
+
+        trainer.getTeam().stream().forEach(pokemon -> {
+            pokemonWithLvls.add(
+                    new PokemonWithLvl(
+                            pokemon.getLevel(),
+                            pokemonTypes.stream()
+                                        .filter(pokemonType -> pokemon.getPokemonTypeId() == pokemonType.getId())
+                                        .findAny().get()
+                    )
+            );
+        });
+
         return TrainerWithPokemons.builder()
                 .trainer(trainer)
-                .team(pokemonTypeService.listPokemonsTypes(ids))
+                .team(pokemonWithLvls)
                 .build();
     }
 }
