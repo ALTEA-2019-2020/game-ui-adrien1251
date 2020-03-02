@@ -13,5 +13,7 @@ import java.util.List;
 public class Trainer {
     private String name;
 
+    private String password;
+
     private List<Pokemon> team;
 }

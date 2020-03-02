@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface TrainerService {
     List<Trainer> getAllTrainers();
+    List<Trainer> getAllTrainers(String actualTrainer);
     TrainerWithPokemons getTrainer(String name);
 }

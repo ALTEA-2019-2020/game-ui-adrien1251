@@ -6,11 +6,14 @@ import com.miage.altea.game_ui.pokemonTypes.bo.PokemonType;
 import com.miage.altea.game_ui.pokemonTypes.service.PokemonTypeService;
 import com.miage.altea.game_ui.trainer.bo.Pokemon;
 import com.miage.altea.game_ui.trainer.bo.Trainer;
+import org.apache.el.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +30,7 @@ public class TrainerServiceImpl implements TrainerService {
     private PokemonTypeService pokemonTypeService;
 
     @Autowired
+    @Qualifier("trainerApiRestTemplate")
     void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -45,6 +49,15 @@ public class TrainerServiceImpl implements TrainerService {
     public List<Trainer> getAllTrainers() {
         Trainer[] trainers = restTemplate.getForObject(trainerServiceUrl + TRAINER_PATH, Trainer[].class);
         return Arrays.asList(trainers);
+    }
+
+    @Override
+    public List<Trainer> getAllTrainers(String actualTrainer) {
+        Trainer[] trainers = restTemplate.getForObject(trainerServiceUrl + TRAINER_PATH, Trainer[].class);
+
+        return Arrays.stream(trainers)
+                .filter(trainer -> !trainer.getName().equals(actualTrainer))
+                .collect(Collectors.toList());
     }
 
     @Override
