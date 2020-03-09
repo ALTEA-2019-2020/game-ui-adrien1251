@@ -50,9 +50,12 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public List<Trainer> getAllTrainers() {
+    public List<TrainerWithPokemons> getAllTrainers() {
         Trainer[] trainers = restTemplate.getForObject(trainerServiceUrl + TRAINER_PATH, Trainer[].class);
-        return Arrays.asList(trainers);
+
+        return Arrays.stream(trainers)
+                .map(trainerConverter::trainerToTrainerWithPokemons)
+                .collect(Collectors.toList());
     }
 
     @Override

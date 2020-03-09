@@ -6,7 +6,7 @@ import com.miage.altea.game_ui.trainer.bo.Trainer;
 import java.util.List;
 
 public interface TrainerService {
-    List<Trainer> getAllTrainers();
+    List<TrainerWithPokemons> getAllTrainers();
     List<TrainerWithPokemons> getAllTrainers(String actualTrainer);
     TrainerWithPokemons getTrainer(String name);
 }

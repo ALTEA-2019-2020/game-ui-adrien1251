@@ -9,9 +9,12 @@
     <div class="row">
         <ul class="nav justify-content-center">
             {{#allTrainer}}
-            <li class="nav-item col-sm">
-                <a href="/trainers/{{name}}" >{{name}}</a>
-            </li>
+            <div class="container">
+                <h3>{{trainer.name}}</h3>
+                {{#team}}
+                    {{> layout/pokemonDetail }}
+                {{/team}}
+            </div>
             {{/allTrainer}}
         </ul>
     </div>
