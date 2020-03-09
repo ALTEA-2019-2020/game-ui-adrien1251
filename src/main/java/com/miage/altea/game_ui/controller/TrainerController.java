@@ -24,7 +24,7 @@ public class TrainerController {
     @GetMapping(value = "/{name}")
     public ModelAndView trainerName(@PathVariable String name){
         var modelAndView = new ModelAndView("trainerDetail");
-        modelAndView.addObject("trainer", trainerService.getTrainer(name));
+        modelAndView.addObject("trainerDetail", trainerService.getTrainer(name));
         return modelAndView;
     }
 

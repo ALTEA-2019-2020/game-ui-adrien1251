@@ -1,15 +1,10 @@
 {{> layout/header}}
 
 <body>
+{{> profileHeader }}
 
-<div class="container">
-    <h1 class="pt-md-5 pb-md-5">{{trainer.trainer.name}}</h1>
-    <div class="card-deck">
-        {{#trainer.team}}
-            {{> layout/pokemonDetail}}
-        {{/trainer.team}}
-    </div>
-</div>
+{{> layout/trainerDetailAlone }}
+
 </body>
 
 {{> layout/footer}}

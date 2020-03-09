@@ -1,0 +1,8 @@
+<div class="container">
+    <h1 class="pt-md-5 pb-md-5">{{trainerDetail.trainer.name}}</h1>
+    <div class="card-deck">
+        {{#trainerDetail.team}}
+            {{> layout/pokemonDetail}}
+        {{/trainerDetail.team}}
+    </div>
+</div>

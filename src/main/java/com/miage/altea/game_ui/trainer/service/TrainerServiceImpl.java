@@ -6,6 +6,7 @@ import com.miage.altea.game_ui.pokemonTypes.bo.PokemonType;
 import com.miage.altea.game_ui.pokemonTypes.service.PokemonTypeService;
 import com.miage.altea.game_ui.trainer.bo.Pokemon;
 import com.miage.altea.game_ui.trainer.bo.Trainer;
+import com.miage.altea.game_ui.trainer.converter.TrainerConverter;
 import org.apache.el.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,6 +31,9 @@ public class TrainerServiceImpl implements TrainerService {
     private PokemonTypeService pokemonTypeService;
 
     @Autowired
+    private TrainerConverter trainerConverter;
+
+    @Autowired
     @Qualifier("trainerApiRestTemplate")
     void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -52,38 +56,19 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public List<Trainer> getAllTrainers(String actualTrainer) {
+    public List<TrainerWithPokemons> getAllTrainers(String actualTrainer) {
         Trainer[] trainers = restTemplate.getForObject(trainerServiceUrl + TRAINER_PATH, Trainer[].class);
 
         return Arrays.stream(trainers)
                 .filter(trainer -> !trainer.getName().equals(actualTrainer))
+                .map(trainerConverter::trainerToTrainerWithPokemons)
                 .collect(Collectors.toList());
     }
 
     @Override
     public TrainerWithPokemons getTrainer(String name) {
-        Trainer trainer = restTemplate.getForObject(trainerServiceUrl + TRAINER_PATH + name, Trainer.class);
-
-        List<Integer> ids = trainer.getTeam().stream().map(Pokemon::getPokemonTypeId).collect(Collectors.toList());
-
-        List<PokemonType> pokemonTypes = pokemonTypeService.listPokemonsTypes(ids);
-
-        List<PokemonWithLvl> pokemonWithLvls = new ArrayList<>();
-
-        trainer.getTeam().stream().forEach(pokemon -> {
-            pokemonWithLvls.add(
-                    new PokemonWithLvl(
-                            pokemon.getLevel(),
-                            pokemonTypes.stream()
-                                        .filter(pokemonType -> pokemon.getPokemonTypeId() == pokemonType.getId())
-                                        .findAny().get()
-                    )
-            );
-        });
-
-        return TrainerWithPokemons.builder()
-                .trainer(trainer)
-                .team(pokemonWithLvls)
-                .build();
+        return trainerConverter.trainerToTrainerWithPokemons(
+                restTemplate.getForObject(trainerServiceUrl + TRAINER_PATH + name, Trainer.class)
+        );
     }
 }
