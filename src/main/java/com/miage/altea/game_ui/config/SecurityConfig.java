@@ -41,4 +41,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             .build()
                 ).orElseThrow(() -> new BadCredentialsException("No such user"));
     }
+
 }
