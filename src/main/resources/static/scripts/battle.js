@@ -8,7 +8,7 @@ let opponentCurrentPokemon;
 
 const skipAnimations = false;
 
-const battleApiUrl = "http://localhost:9001";
+const battleApiUrl = "https://battle-api-adrien1251.herokuapp.com";
 
 async function startBattle(a, b){
     trainerName = a;
@@ -138,10 +138,12 @@ function updateControls(){
 
 function enableControls(){
     $("#attack-btn").removeAttr("disabled");
+    $("#heal-btn").removeAttr("disabled");
 }
 
 function disableControls(){
     $("#attack-btn").attr("disabled","disabled");
+    $("#heal-btn").attr("disabled","disabled");
 }
 
 async function playerCommand(command){
@@ -150,6 +152,10 @@ async function playerCommand(command){
         await showMessage(`${trainerCurrentPokemon.type.name} attacks !`);
         await sendAttack(trainerName);
         await animateAttack(trainerName, opponentName);
+    } else if("HEAL" === command){
+        await showMessage(`${trainerCurrentPokemon.type.name} healing !`);
+        await sendHeal(trainerName);
+        await animateHeal(trainerName, opponentName);
     }
 
     refreshBattle();
@@ -165,8 +171,21 @@ async function animateAttack(attackingTrainer, defendingTrainer){
     await animateCss(defendingPokemonImageSelector, "flash");
 }
 
+async function animateHeal(attackingTrainer){
+    console.log(`${attackingTrainer} take potion`);
+
+    const attackingPokemonImageSelector = `[id='${attackingTrainer}-pokemon-img']`;
+
+    await animateCss(attackingPokemonImageSelector, "bounce");
+}
+
 async function sendAttack(trainerName){
     const result = await $.post(`${battleApiUrl}/battles/${battle.uuid}/${trainerName}/attack`);
+    updateBattleData(result);
+}
+
+async function sendHeal(trainerName){
+    const result = await $.post(`${battleApiUrl}/battles/${battle.uuid}/${trainerName}/heal`);
     updateBattleData(result);
 }
 

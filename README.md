@@ -37,3 +37,5 @@ Available routes:
 
 `GET profile/`    : Saw your profile and the other trainer profile
 
+`GET fight/<name>`    : Fight the opponent of your choice
+

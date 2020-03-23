@@ -19,7 +19,7 @@
     <h2>{{trainerName}} Vs {{opponentName}}</h2>
 
     <div class="gameZone"
-         style="width: 800px; height: 480px; position:relative; margin: auto; background: url('/static/icons/battle_background.png')">
+         style="width: 800px; height: 480px; position:relative; margin: auto; background: url('/static/images/battle_background.png')">
 
         <img id="{{trainerName}}-pokemon-img" style="position:absolute;  width: 300px; left: 0px; bottom: 0px;"/>
         <img id="{{opponentName}}-pokemon-img" style="position:absolute; width: 200px; right: 100px; top: 100px;"/>
@@ -35,6 +35,7 @@
                 </p>
 
                 <button class="btn btn-danger" id="attack-btn" onclick="playerCommand('ATTACK');">Attack</button>
+                <button class="btn btn-danger" id="heal-btn" onclick="playerCommand('HEAL');">Heal</button>
             </div>
         </div>
 
